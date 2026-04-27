@@ -6,7 +6,8 @@ LIBFT = $(LIBDIR)/libft.a
 INCLD = -I$(LIBDIR) -I./includes
 SRCDIR = ./srcs/
 SRCS = $(SRCDIR)main.c $(SRCDIR)builtins/builtins.c $(SRCDIR)executor/executor.c \
-	$(SRCDIR)lexer/lexer.c $(SRCDIR)parser/parser.c $(SRCDIR)signals/signals.c
+	$(SRCDIR)lexer/lexer.c $(SRCDIR)lexer/lexer_utils.c $(SRCDIR)parser/parser.c \
+	$(SRCDIR)signals/signals.c
 OBJS = $(SRCS:.c=.o)
 
 all:$(NAME)
