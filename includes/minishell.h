@@ -6,7 +6,7 @@
 /*   By: Dana Nour <dna2@students.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 14:13:39 by Dana Nour         #+#    #+#             */
-/*   Updated: 2026/04/28 11:58:31 by Dana Nour        ###   ########.fr       */
+/*   Updated: 2026/04/30 21:57:25 by Dana Nour        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "../libft/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <signal.h>
 /* # include <unistd.h>
 # include <stdio.h>
 # include <sys/wait.h> */
@@ -74,4 +75,5 @@ void	free_token(t_token **token);
 t_env	*env_list(char **envp);
 t_env	*ft_new_env(char *envp);
 void	free_env(t_env **env);
+void	setup_signals(void);
 #endif

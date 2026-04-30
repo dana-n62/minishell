@@ -6,11 +6,13 @@
 /*   By: Dana Nour <dna2@students.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 10:19:49 by Dana Nour         #+#    #+#             */
-/*   Updated: 2026/04/30 08:35:52 by Dana Nour        ###   ########.fr       */
+/*   Updated: 2026/04/30 22:12:45 by Dana Nour        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	g_signal;
 
 void	free_all(t_shell *shell)
 {
@@ -31,17 +33,20 @@ void	shell_action(t_shell *shell)
 
 int	main(int argc, char **argv, char **envp)
 {
-	(void) argc;
-	(void) argv;
 	t_shell	shell;
 
+	(void) argc;
+	(void) argv;
 	shell.env = env_list(envp);
 	if (!shell.env)
 		exit(1);
 	shell.cmds = NULL;
 	shell.exit_status = 0;
+	setup_signals();
 	while (1)
 	{
+		if (g_signal == SIGINT)
+			shell.exit_status = 130;
 		shell.input = readline("minishell$");
 		if (shell.input == NULL)
 		{
