@@ -6,7 +6,7 @@
 /*   By: Dana Nour <dna2@students.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 10:19:49 by Dana Nour         #+#    #+#             */
-/*   Updated: 2026/04/30 22:12:45 by Dana Nour        ###   ########.fr       */
+/*   Updated: 2026/04/30 22:32:33 by Dana Nour        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,23 @@ void	shell_action(t_shell *shell)
 	t_token	*token_list;
 
 	add_history(shell->input);
-	(void)token_list;// = ft_lexer(shell->input);
+	(void)token_list;
 	free_all(shell);
+}
+
+static void	check_input(t_shell *shell)
+{
+	if (shell->input == NULL)
+	{
+		write(1, "\n", 1);
+		free_env(&shell->env);
+		exit(shell->exit_status);
+	}
+	if (g_signal == SIGINT)
+	{
+		shell->exit_status = 130;
+		g_signal = 0;
+	}
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -45,15 +60,7 @@ int	main(int argc, char **argv, char **envp)
 	setup_signals();
 	while (1)
 	{
-		if (g_signal == SIGINT)
-			shell.exit_status = 130;
-		shell.input = readline("minishell$");
-		if (shell.input == NULL)
-		{
-			write(1, "\n", 1);
-			free_env(&shell.env);
-			exit(shell.exit_status);
-		}
+		check_input(&shell);
 		if (shell.input[0] != '\0')
 			shell_action(&shell);
 	}
