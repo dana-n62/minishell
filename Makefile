@@ -7,7 +7,7 @@ INCLD = -I$(LIBDIR) -I./includes
 SRCDIR = ./srcs/
 SRCS = $(SRCDIR)main.c $(SRCDIR)builtins/builtins.c $(SRCDIR)executor/executor.c \
 	$(SRCDIR)lexer/lexer.c $(SRCDIR)lexer/lexer_utils.c $(SRCDIR)parser/parser.c \
-	$(SRCDIR)signals/signals.c $(SRCDIR)env/env.c
+	$(SRCDIR)parser/parser_utils.c $(SRCDIR)signals/signals.c $(SRCDIR)env/env.c
 OBJS = $(SRCS:.c=.o)
 
 all:$(NAME)

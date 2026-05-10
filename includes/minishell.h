@@ -6,7 +6,7 @@
 /*   By: Dana Nour <dna2@students.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 14:13:39 by Dana Nour         #+#    #+#             */
-/*   Updated: 2026/04/30 21:57:25 by Dana Nour        ###   ########.fr       */
+/*   Updated: 2026/05/08 17:50:41 by Dana Nour        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <signal.h>
-/* # include <unistd.h>
-# include <stdio.h>
+# include <unistd.h>
+/*# include <stdio.h>
 # include <sys/wait.h> */
 /*can be used throughout the program since its in the header */
 extern int	g_signal;
@@ -48,7 +48,7 @@ typedef struct s_shell
 	char		*input; /*the input raw line (as is)*/
 }	t_shell;
 /*defining the token struct, its type as enum*/
-/*enum assigns a name for an integer value starting from 0 incrementing until the end of list*/
+/*enum assigns a name for an integer value  starting from 0 incrementing until the end of list*/
 typedef enum s_token_type
 {
 	WORD, /*any string even the enviroment var (0)*/
@@ -76,4 +76,10 @@ t_env	*env_list(char **envp);
 t_env	*ft_new_env(char *envp);
 void	free_env(t_env **env);
 void	setup_signals(void);
+t_cmd	*ft_new_cmd(void);
+void	ft_cmd_addback(t_cmd **head, t_cmd *new);
+void	ft_free_cmd(t_cmd **head);
+int	count_words(t_token *temp);
+int	ft_handle_word(t_token **temp, t_cmd **current);
+int	ft_handle_redir(t_token **temp, t_cmd **current);
 #endif
