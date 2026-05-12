@@ -6,7 +6,7 @@
 /*   By: Dana Nour <dna2@students.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 12:47:58 by Dana Nour         #+#    #+#             */
-/*   Updated: 2026/05/08 20:05:28 by Dana Nour        ###   ########.fr       */
+/*   Updated: 2026/05/12 10:06:12 by Dana Nour        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ static int	handle_heredoc(t_token **temp, t_cmd **current, int size)
 
 	if (pipe(fd) < 0)
 		return (-1);
-	if (!(input = readline("")))
-		return (-1);
+	input = readline("");
 	while (input && ft_strncmp(input, (*temp)->value, size) != 0)
 	{
 		write(fd[1], input, ft_strlen(input));
@@ -28,8 +27,13 @@ static int	handle_heredoc(t_token **temp, t_cmd **current, int size)
 		free(input);
 		input = readline("");
 	}
-	if (input)
-		free(input);
+	if (!input)
+	{
+		close(fd[0]);
+		close(fd[1]);
+		return (-1);
+	}
+	free(input);
 	close(fd[1]);
 	(*current)->heredoc_fd = fd[0];
 	return (0);
@@ -37,12 +41,10 @@ static int	handle_heredoc(t_token **temp, t_cmd **current, int size)
 
 int	ft_handle_redir(t_token **temp, t_cmd **current)
 {
-	int				size;
 	t_token_type	type;
 
 	type = (*temp)->type;
 	(*temp) = (*temp)->next;
-	size = ft_strlen((*temp)->value);
 	if (type == REDIR_IN)
 	{
 		(*current)->infile = ft_strdup((*temp)->value);
@@ -50,8 +52,10 @@ int	ft_handle_redir(t_token **temp, t_cmd **current)
 			return (-1);
 	}
 	else if (type == HEREDOC)
-		if (handle_heredoc(temp, current, size) < 0)
+	{
+		if (handle_heredoc(temp, current, ft_strlen((*temp)->value)) < 0)
 			return (-1);
+	}
 	else
 	{
 		if (type == REDIR_APPEND)
@@ -84,11 +88,35 @@ int	ft_handle_word(t_token **temp, t_cmd **current)
 	return (0);
 }
 
+int	ft_handle_tokens(t_cmd **current, t_token **temp, t_cmd **head_cmd)
+{
+	if ((*temp)->type == WORD)
+	{
+		if (ft_handle_word(temp, current) < 0)
+			return (-1);
+	}
+	else if ((*temp)->type != PIPE)
+	{
+		if (ft_handle_redir(temp, current) < 0)
+			return (-1);
+	}
+	else if ((*temp)->type == PIPE)
+	{
+		(*current) = ft_new_cmd();
+		if (!*current)
+			return (-1);
+		ft_cmd_addback(head_cmd, (*current));
+		return (0);
+	}
+	return (1);
+}
+
 t_cmd	*ft_parser(t_token *tokens)
 {
 	t_cmd	*head_cmd;
 	t_cmd	*current;
 	t_token	*temp;
+	int		cntinue;
 
 	head_cmd = ft_new_cmd();
 	if (!head_cmd)
@@ -97,34 +125,14 @@ t_cmd	*ft_parser(t_token *tokens)
 	temp = tokens;
 	while (temp)
 	{
-		if (temp->type == WORD)
+		cntinue = ft_handle_tokens(&current, &temp, &head_cmd);
+		if (cntinue < 0)
 		{
-			if (ft_handle_word(&temp, &current) < 0)
-			{
-				ft_free_cmd(&head_cmd);
-				return (NULL);
-			}
+			ft_free_cmd(&head_cmd);
+			return (NULL);
+		}
+		if (cntinue == 1)
 			continue ;
-		}
-		if (temp->type != PIPE)
-		{
-			if (ft_handle_redir(&temp, &current) < 0)
-			{
-				ft_free_cmd(&head_cmd);
-				return (NULL);
-			}
-			continue ;
-		}
-		else if (temp->type == PIPE)
-		{
-			current = ft_new_cmd();
-			if (!current)
-			{
-				ft_free_cmd(&head_cmd);
-				return (NULL);
-			}
-			ft_cmd_addback(&head_cmd, current);
-		}
 		temp = temp->next;
 	}
 	return (head_cmd);
