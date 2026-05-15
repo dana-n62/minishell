@@ -6,7 +6,7 @@
 /*   By: Dana Nour <dna2@students.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/26 09:55:40 by Dana Nour         #+#    #+#             */
-/*   Updated: 2026/04/27 14:09:34 by Dana Nour        ###   ########.fr       */
+/*   Updated: 2026/05/15 14:09:04 by Dana Nour        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ t_token	*ft_get_word(char *input, int *i)
 	}
 	temp->value = ft_substr(input, *i, crnt - *i);
 	if (!temp->value)
-		free_token(&temp);
+		free_tokens(&temp);
 	(*i) = crnt;
 	return (temp);
 }

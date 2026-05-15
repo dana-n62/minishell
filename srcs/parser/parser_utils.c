@@ -6,7 +6,7 @@
 /*   By: Dana Nour <dna2@students.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 12:56:18 by Dana Nour         #+#    #+#             */
-/*   Updated: 2026/05/07 12:24:56 by Dana Nour        ###   ########.fr       */
+/*   Updated: 2026/05/15 14:27:35 by Dana Nour        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	ft_free_cmd(t_cmd **head)
 			free(temp->args[i]);
 			i++;
 		}
+		free(temp->args);
 		if (temp->infile)
 			free(temp->infile);
 		if (temp->outfile)

@@ -6,7 +6,7 @@
 /*   By: Dana Nour <dna2@students.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 14:13:39 by Dana Nour         #+#    #+#             */
-/*   Updated: 2026/05/08 17:50:41 by Dana Nour        ###   ########.fr       */
+/*   Updated: 2026/05/13 18:35:15 by Dana Nour        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	ft_token_addback(t_token **head, t_token *new);
 t_token	*ft_get_operator(char *input, int *i);
 int		ft_get_redir(t_token **temp, char *op);
 t_token	*ft_lexer(char *input);
-void	free_token(t_token **token);
+void	free_tokens(t_token **token);
 t_env	*env_list(char **envp);
 t_env	*ft_new_env(char *envp);
 void	free_env(t_env **env);
@@ -79,7 +79,8 @@ void	setup_signals(void);
 t_cmd	*ft_new_cmd(void);
 void	ft_cmd_addback(t_cmd **head, t_cmd *new);
 void	ft_free_cmd(t_cmd **head);
-int	count_words(t_token *temp);
-int	ft_handle_word(t_token **temp, t_cmd **current);
-int	ft_handle_redir(t_token **temp, t_cmd **current);
+int		count_words(t_token *temp);
+int		ft_handle_word(t_token **temp, t_cmd **current);
+int		ft_handle_redir(t_token **temp, t_cmd **current);
+t_cmd	*ft_parser(t_token *tokens);
 #endif

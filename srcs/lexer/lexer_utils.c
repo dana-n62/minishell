@@ -6,7 +6,7 @@
 /*   By: Dana Nour <dna2@students.42amman.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/26 19:45:58 by Dana Nour         #+#    #+#             */
-/*   Updated: 2026/05/05 12:12:43 by Dana Nour        ###   ########.fr       */
+/*   Updated: 2026/05/13 18:40:38 by Dana Nour        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,20 @@ void	ft_token_addback(t_token **head, t_token *new)
 	temp->next = new;
 }
 
-void	free_token(t_token **token)
+void	free_tokens(t_token **token)
 {
+	t_token	*temp;
+
 	if (!token || !*token)
 		return ;
-	if ((*token)->value)
-		free((*token)->value);
+	temp = (*token);
+	while ((*token))
+	{
+		temp = (*token);
+		(*token) = (*token)->next;
+		free(temp->value);
+		free(temp);
+	}
 	free((*token));
 	(*token) = NULL;
 }
